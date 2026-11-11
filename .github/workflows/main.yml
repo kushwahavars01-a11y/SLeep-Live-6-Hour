@@ -11,7 +11,7 @@ jobs:
       - name: Install FFmpeg and gdown
         run: |
           sudo apt-get update && sudo apt-get install -y ffmpeg python3-pip
-          pip3 install gdown
+          pip3 install gdown --break-system-packages
 
       - name: Download Video from Drive
         run: |
@@ -22,4 +22,4 @@ jobs:
           ffmpeg -stream_loop -1 -re -i loop.mp4 \
             -c:v libx264 -preset veryfast -b:v 2500k -maxrate 2500k -bufsize 5000k \
             -pix_fmt yuv420p -g 60 -c:a aac -b:a 128k -ar 44100 \
-            -f flv "rtmp://a.rtmp.youtube.com/live2/${{ secrets.YT_KEY }}"
+            -f flv "rtmp://://youtube.com{{ secrets.YT_KEY }}"
