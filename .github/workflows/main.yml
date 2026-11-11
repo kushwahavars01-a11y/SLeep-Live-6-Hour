@@ -1,4 +1,4 @@
-name: 9-16 Vertical Cloud Stream
+name: Cloud Livestream
 
 on:
   workflow_dispatch:
@@ -6,21 +6,21 @@ on:
 jobs:
   live_stream:
     runs-on: ubuntu-latest
-    timeout-minutes: 360
+
     steps:
-      - name: Install FFmpeg
-        run: |
-          sudo apt-get update && sudo apt-get install -y ffmpeg curl
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-      - name: Download Video from Drive
-        run: |
-          curl -L -c /tmp/cookies "https://google.com" > /tmp/intermezzo.html
-          curl -L -b /tmp/cookies "https://google.com" -o loop.mp4
-          ls -lh loop.mp4
+    - name: Install FFmpeg
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg
 
-      - name: Start Vertical Stream
-        run: |
-          ffmpeg -stream_loop -1 -re -i loop.mp4 \
-            -c:v libx264 -preset veryfast -b:v 2500k -maxrate 2500k -bufsize 5000k \
-            -pix_fmt yuv420p -g 60 -c:a aac -b:a 128k -ar 44100 \
-            -f flv "rtmp://://youtube.com{{ secrets.YT_KEY }}"
+    - name: Start Vertical Stream
+      env:
+        YT_STREAM_KEY: ${{ secrets.YT_KEY }}
+      run: |
+        ffmpeg -re -stream_loop -1 -i loop.mp4 \
+        -c:v libx264 -preset veryfast -b:v 3000k -maxrate 3000k -bufsize 6000k \
+        -pix_fmt yuv420p -g 50 -c:a aac -b:a 128k -ar 44100 \
+        -f flv "rtmp://://youtube.com"
