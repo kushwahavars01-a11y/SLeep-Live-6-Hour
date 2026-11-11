@@ -1,0 +1,25 @@
+name: 9-16 Vertical Cloud Stream
+
+on:
+  workflow_dispatch:
+
+jobs:
+  live_stream:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: Install FFmpeg and gdown
+        run: |
+          sudo apt-get update && sudo apt-get install -y ffmpeg python3-pip
+          pip3 install gdown
+
+      - name: Download Video from Drive
+        run: |
+          gdown --fuzzy "https://drive.google.com/file/d/1rL2xpP43z5AxwWrsqwcO2qdq6EB98eKq/view?usp=drivesdk" -O loop.mp4
+
+      - name: Start Vertical Stream
+        run: |
+          ffmpeg -stream_loop -1 -re -i loop.mp4 \
+            -c:v libx264 -preset veryfast -b:v 2500k -maxrate 2500k -bufsize 5000k \
+            -pix_fmt yuv420p -g 60 -c:a aac -b:a 128k -ar 44100 \
+            -f flv "rtmp://a.rtmp.youtube.com/live2/${{ secrets.YT_KEY }}"
