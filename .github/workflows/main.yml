@@ -8,14 +8,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 360
     steps:
-      - name: Install FFmpeg and gdown
+      - name: Install FFmpeg
         run: |
-          sudo apt-get update && sudo apt-get install -y ffmpeg python3-pip
-          pip3 install gdown --break-system-packages
+          sudo apt-get update && sudo apt-get install -y ffmpeg curl
 
-            - name: Download Video from Drive
+      - name: Download Video from Drive
         run: |
-          gdown 1rL2xpP43z5AxwWrsqwcO2qdq6EB98eKq -O loop.mp4
+          curl -L -c /tmp/cookies "https://google.com" > /tmp/intermezzo.html
+          curl -L -b /tmp/cookies "https://google.com" -o loop.mp4
+          ls -lh loop.mp4
 
       - name: Start Vertical Stream
         run: |
