@@ -13,9 +13,9 @@ jobs:
           sudo apt-get update && sudo apt-get install -y ffmpeg python3-pip
           pip3 install gdown --break-system-packages
 
-      - name: Download Video from Drive
+            - name: Download Video from Drive
         run: |
-          gdown --fuzzy "https://drive.google.com/file/d/1rL2xpP43z5AxwWrsqwcO2qdq6EB98eKq/view?usp=drivesdk" -O loop.mp4
+          gdown 1rL2xpP43z5AxwWrsqwcO2qdq6EB98eKq -O loop.mp4
 
       - name: Start Vertical Stream
         run: |
